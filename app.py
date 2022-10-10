@@ -1,11 +1,7 @@
 import json
 from flask import Flask, render_template, request, redirect, flash, url_for
 
-
-def load_clubs() -> list:
-    with open('clubs.json') as c:
-        clubs_list = json.load(c)['clubs']
-        return clubs_list
+from services.club import ClubService
 
 
 def load_competitions():
@@ -18,7 +14,6 @@ app = Flask(__name__)
 app.secret_key = 'something_special'
 
 competitions = load_competitions()
-clubs = load_clubs()
 
 
 @app.route('/')
@@ -28,17 +23,14 @@ def index():
 
 @app.route('/showSummary', methods=['POST'])
 def show_summary():
-    club = (
-        [club for club in clubs if club['email'] ==
-         request.form['email']][0]
-        )
+    club = ClubService().get_club_by_email(request.form['email'])
     return render_template('welcome.html', club=club,
                            competitions=competitions)
 
 
 @app.route('/book/<competition>/<club>')
 def book(competition, club):
-    found_club = [c for c in clubs if c['name'] == club][0]
+    found_club = ClubService().get_club_by_name(club)
     found_competition = (
         [c for c in competitions if c['name'] ==
          competition][0]
@@ -58,7 +50,7 @@ def purchase_places():
         [c for c in competitions if c['name'] ==
          request.form['competition']][0]
         )
-    club = [c for c in clubs if c['name'] == request.form['club']][0]
+    club = ClubService().get_club_by_name(request.form['club'])
     places_required = int(request.form['places'])
     competition['numberOfPlaces'] = (
         int(competition['numberOfPlaces']) - places_required
