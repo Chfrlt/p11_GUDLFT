@@ -5,8 +5,15 @@ class Club():
 
     def __init__(self, name, points, email) -> None:
         self.club_name = name
-        self.points = points
         self.email = email
+        self.points = self.is_valid_points(points)
+    
+    
+    def is_valid_points(points):
+        try:
+            return int(points)
+        except ValueError:
+            raise
 
     @classmethod
     def load_clubs(cls) -> list:
