@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, redirect, flash, url_for
 from services.club import ClubService
 from services.competition import CompetitionService
 from services.purchase import PurchaseHandler
+from services.booking import BookingHandler
 
 
 app = Flask(__name__)
@@ -22,16 +23,12 @@ def show_summary():
 
 
 @app.route('/book/<competition>/<club>')
-def book(competition, club):
-    found_club = ClubService().get_club_by_name(club)
-    found_competition = CompetitionService().get_competition_by_name(competition)
-    if found_club and found_competition:
-        return render_template('booking.html', club=found_club,
-                               competition=found_competition)
-    else:
-        flash("Something went wrong-please try again")
-        return render_template('welcome.html', club=club,
-                               competitions=CompetitionService().competitions)
+def book(competition: str, club: str):
+    booking_instance = BookingHandler(club, competition)
+    booking_result = booking_instance.find_data()
+    flash(booking_result['message'])
+    return render_template('booking.html', club=booking_result['club'],
+                           competition=booking_result['competition'])
 
 
 @app.route('/purchasePlaces', methods=['POST'])
