@@ -2,19 +2,11 @@ import json
 from flask import Flask, render_template, request, redirect, flash, url_for
 
 from services.club import ClubService
-
-
-def load_competitions():
-    with open('competitions.json') as comps:
-        competitions_list = json.load(comps)['competitions']
-        return competitions_list
+from services.competition import CompetitionService
 
 
 app = Flask(__name__)
 app.secret_key = 'something_special'
-
-competitions = load_competitions()
-
 
 @app.route('/')
 def index():
@@ -24,6 +16,7 @@ def index():
 @app.route('/showSummary', methods=['POST'])
 def show_summary():
     club = ClubService().get_club_by_email(request.form['email'])
+    competitions=CompetitionService().competitions
     return render_template('welcome.html', club=club,
                            competitions=competitions)
 
@@ -31,25 +24,19 @@ def show_summary():
 @app.route('/book/<competition>/<club>')
 def book(competition, club):
     found_club = ClubService().get_club_by_name(club)
-    found_competition = (
-        [c for c in competitions if c['name'] ==
-         competition][0]
-        )
+    found_competition = CompetitionService().get_competition_by_name(competition)
     if found_club and found_competition:
         return render_template('booking.html', club=found_club,
                                competition=found_competition)
     else:
         flash("Something went wrong-please try again")
         return render_template('welcome.html', club=club,
-                               competitions=competitions)
+                               competitions=CompetitionService().competitions)
 
 
 @app.route('/purchasePlaces', methods=['POST'])
 def purchase_places():
-    competition = (
-        [c for c in competitions if c['name'] ==
-         request.form['competition']][0]
-        )
+    competition = CompetitionService().get_competition_by_name(competition)
     club = ClubService().get_club_by_name(request.form['club'])
     places_required = int(request.form['places'])
     competition['numberOfPlaces'] = (
@@ -57,7 +44,7 @@ def purchase_places():
         )
     flash('Great-booking complete!')
     return render_template('welcome.html', club=club,
-                           competitions=competitions)
+                           competitions=CompetitionService().competitions)
 
 
 # TODO: Add route for points display
