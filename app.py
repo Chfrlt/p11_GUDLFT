@@ -1,25 +1,13 @@
-import json
 from flask import Flask, render_template, request, redirect, flash, url_for
 
-
-def load_clubs() -> list:
-    with open('clubs.json') as c:
-        clubs_list = json.load(c)['clubs']
-        return clubs_list
-
-
-def load_competitions():
-    with open('competitions.json') as comps:
-        competitions_list = json.load(comps)['competitions']
-        return competitions_list
+from services.club import ClubService
+from services.competition import CompetitionService
+from services.purchase import PurchaseHandler
+from services.booking import BookingHandler
 
 
 app = Flask(__name__)
 app.secret_key = 'something_special'
-
-competitions = load_competitions()
-clubs = load_clubs()
-
 
 @app.route('/')
 def index():
@@ -28,44 +16,31 @@ def index():
 
 @app.route('/showSummary', methods=['POST'])
 def show_summary():
-    club = (
-        [club for club in clubs if club['email'] ==
-         request.form['email']][0]
-        )
+    club = ClubService().get_club_by_email(request.form['email'])
+    competitions = CompetitionService().competitions
     return render_template('welcome.html', club=club,
                            competitions=competitions)
 
 
 @app.route('/book/<competition>/<club>')
-def book(competition, club):
-    found_club = [c for c in clubs if c['name'] == club][0]
-    found_competition = (
-        [c for c in competitions if c['name'] ==
-         competition][0]
-        )
-    if found_club and found_competition:
-        return render_template('booking.html', club=found_club,
-                               competition=found_competition)
-    else:
-        flash("Something went wrong-please try again")
-        return render_template('welcome.html', club=club,
-                               competitions=competitions)
+def book(competition: str, club: str):
+    booking_instance = BookingHandler(club, competition)
+    booking_result = booking_instance.find_data()
+    flash(booking_result['message'])
+    return render_template('booking.html', club=booking_result['club'],
+                           competition=booking_result['competition'])
 
 
 @app.route('/purchasePlaces', methods=['POST'])
 def purchase_places():
-    competition = (
-        [c for c in competitions if c['name'] ==
-         request.form['competition']][0]
-        )
-    club = [c for c in clubs if c['name'] == request.form['club']][0]
-    places_required = int(request.form['places'])
-    competition['numberOfPlaces'] = (
-        int(competition['numberOfPlaces']) - places_required
-        )
+    purchase_instance = PurchaseHandler(request.form['club'],
+                                        request.form['competition'],
+                                        request.form['places'])
+    purchase_result = purchase_instance.purchase_places()
     flash('Great-booking complete!')
-    return render_template('welcome.html', club=club,
-                           competitions=competitions)
+    return render_template('welcome.html',
+                           club=purchase_result['club'],
+                           competitions=purchase_instance.competitions)
 
 
 # TODO: Add route for points display
