@@ -13,7 +13,7 @@ class Competition():
         try:
             return int(number_of_places)
         except ValueError:
-            print('Invalid value')
+            raise
 
     @classmethod
     def load_competitions(cls):
