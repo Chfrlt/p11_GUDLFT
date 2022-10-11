@@ -13,14 +13,14 @@ class PurchaseHandler(CompetitionService, ClubService):
         ClubService.__init__(self)
         self.competition = None
         self.club = None
-        self.set_up(club, competition)
         self.places_required = self.is_valid_places_required(places_required)
+        self.set_up(club, competition)
 
-    def is_valid_places_required(places_required):
+    def is_valid_places_required(self, places_required):
         try:
             return int(places_required)
         except ValueError:
-            print('Invalid value')
+            raise
 
     def set_up(self, club: str, competition: str) -> None:
         club = self.get_club_by_name(club)
