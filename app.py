@@ -17,7 +17,7 @@ def index():
 @app.route('/showSummary', methods=['POST'])
 def show_summary():
     club = ClubService().get_club_by_email(request.form['email'])
-    competitions=CompetitionService().competitions
+    competitions = CompetitionService().competitions
     return render_template('welcome.html', club=club,
                            competitions=competitions)
 
