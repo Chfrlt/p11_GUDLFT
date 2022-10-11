@@ -7,9 +7,8 @@ class Club():
         self.club_name = name
         self.email = email
         self.points = self.is_valid_points(points)
-    
-    
-    def is_valid_points(points):
+
+    def is_valid_points(self, points):
         try:
             return int(points)
         except ValueError:
