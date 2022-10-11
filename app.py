@@ -16,9 +16,10 @@ def index():
 
 @app.route('/showSummary', methods=['POST'])
 def show_summary():
-    club = ClubService().get_club_by_email(request.form['email'])
+    query = ClubService().get_club_by_email(request.form['email'])
     competitions = CompetitionService().competitions
-    return render_template('welcome.html', club=club,
+    flash(query['message'])
+    return render_template(query['template'], club=query['club'],
                            competitions=competitions)
 
 
