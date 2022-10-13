@@ -1,4 +1,4 @@
-import unittest
+'''import unittest
 
 from repository.club import Club
 from repository.competition import Competition
@@ -104,3 +104,4 @@ class CompetitionTest(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+'''
