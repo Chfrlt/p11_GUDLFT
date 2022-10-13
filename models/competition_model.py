@@ -63,9 +63,3 @@ class Competition():
                        'date': self.date,
                        'numberOfPlaces': str(self.number_of_places)}
         return competition
-
-    @classmethod
-    def deserialize_competition(cls, competition: dict):
-        c = Competition(competition)
-        return c
-

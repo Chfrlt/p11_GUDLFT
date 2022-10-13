@@ -60,16 +60,16 @@ class PurchaseHandler():
                   ' cannot be converted into int')
             raise e
 
-    def purchase_places(self, club: dict,
-                        competition: dict) -> tuple[dict, dict]:
+    def purchase_places(self, club: Club,
+                        competition: Competition) -> tuple[Club, Competition]:
         """
         Subtract attributes places_required from passed club and competition.
 
         Returns:
             tuple: club, competition as Club, Competition objects
         """
-        competition['numberOfPlaces'] = str(int(competition['numberOfPlaces']) - self.places_required)
-        club['points'] = str(int(club['points']) - self.places_required)
+        competition.number_of_places -= self.places_required
+        club.points -= self.places_required
         return club, competition
 
     def execute_purchase(self):

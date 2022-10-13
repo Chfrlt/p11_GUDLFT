@@ -59,8 +59,3 @@ class Club():
                 'email': self.email,
                 'points': str(self.points)}
         return club
-
-    @classmethod
-    def deserialize_club(cls, club: dict) -> object:
-        c = Club(club)
-        return c
