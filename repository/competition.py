@@ -1,35 +1,38 @@
 import json
 
+from models.competition_model import Competition
 
-class Competition():
-    def __init__(self, name, date, number_of_places) -> None:
-        self.competition_name = name
-        self.date = date
-        self.number_of_places = (
-            self.is_valid_number_of_places(number_of_places)
-            )
 
-    def is_valid_number_of_places(self, number_of_places):
-        try:
-            return int(number_of_places)
-        except ValueError:
-            raise
+def load_competitions() -> list[Competition]:
+    """
+    Function to load the competitions table in competitions.json.
 
-    @classmethod
-    def load_competitions(cls):
-        with open('competitions.json') as comps:
-            competitions_list = json.load(comps)['competitions']
-            return competitions_list
+    Returns:
+        list[Competition: object] :
+            A list of competitions found in json as Competition objects.
+    """
+    list_ = []
+    with open('competitions.json') as comps:
+        competitions_list = json.load(comps)['competitions']
+        for comp in competitions_list:
+            list_.append(Competition(comp))
+        return list_
 
-    def serialize_competition(self):
-        competition = {'name': self.competition_name,
-                       'date': self.date,
-                       'numberOfPlaces': self.number_of_places}
-        return competition
 
-    @classmethod
-    def deserialize_competition(cls, competition: dict):
-        c = Competition(competition['name'],
-                        competition['date'],
-                        competition['numberOfPlaces'])
-        return c
+def get_competitions() -> list[Competition]:
+    """
+    Function to get the list of competitions.
+
+    If competitions were not loaded into
+    variable all_competition yet, load them.
+
+    Returns:
+        list[Competition]:
+            Variable all_competitions set as a list of Competition objects.
+    """
+    if not get_competitions.all_competitions:
+        get_competitions.all_competitions = load_competitions()
+    return get_competitions.all_competitions
+
+
+get_competitions.all_competitions = []

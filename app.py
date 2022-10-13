@@ -16,32 +16,30 @@ def index():
 
 @app.route('/showSummary', methods=['POST'])
 def show_summary():
-    query = ClubService().get_club_by_email(request.form['email'])
-    competitions = CompetitionService().competitions
-    flash(query['message'])
-    return render_template(query['template'], club=query['club'],
+    login_result = ClubService().get_club_login_result(request.form['email'])
+    competitions = CompetitionService().get_competitions()
+    flash(login_result['msg'])
+    return render_template(login_result['template'],
+                           club=login_result['club'],
                            competitions=competitions)
 
 
 @app.route('/book/<competition>/<club>')
 def book(competition: str, club: str):
-    booking_instance = BookingHandler(club, competition)
-    booking_result = booking_instance.find_data()
-    flash(booking_result['message'])
-    return render_template('booking.html', club=booking_result['club'],
-                           competition=booking_result['competition'])
+    booking_inst = BookingHandler(club, competition).find_booking_data()
+    return render_template('booking.html', club=booking_inst['club'],
+                           competition=booking_inst['competition'])
 
 
 @app.route('/purchasePlaces', methods=['POST'])
 def purchase_places():
-    purchase_instance = PurchaseHandler(request.form['club'],
-                                        request.form['competition'],
-                                        request.form['places'])
-    purchase_result = purchase_instance.purchase_places()
+    purchase_inst = PurchaseHandler(request.form['club'],
+                                    request.form['competition'],
+                                    request.form['places']).execute_purchase()
     flash('Great-booking complete!')
     return render_template('welcome.html',
-                           club=purchase_result['club'],
-                           competitions=purchase_instance.competitions)
+                           club=purchase_inst['club'],
+                           competitions=purchase_inst['competitions'])
 
 
 # TODO: Add route for points display

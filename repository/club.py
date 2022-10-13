@@ -1,34 +1,36 @@
 import json
 
+from models.club_model import Club
 
-class Club():
+def load_clubs() -> list[Club]:
+    """
+    Function to load the clubs table in clubs.json.
 
-    def __init__(self, name, points, email) -> None:
-        self.club_name = name
-        self.email = email
-        self.points = self.is_valid_points(points)
+    Returns:
+        list[Club: object]:
+            A list of clubs found in json as club objects.
+    """
+    list_ = []
+    with open('clubs.json') as clubs:
+        clubs_list = json.load(clubs)['clubs']
+        for c in clubs_list:
+            list_.append(Club(c))
+        return list_
 
-    def is_valid_points(self, points):
-        try:
-            return int(points)
-        except ValueError:
-            raise
+def get_clubs():
+    """
+    Function to get the list of clubs.
 
-    @classmethod
-    def load_clubs(cls) -> list:
-        with open('clubs.json') as c:
-            clubs_list = json.load(c)['clubs']
-            return clubs_list
+    If clubs were not loaded into
+    variable all_clubs yet, load them.
 
-    def serialize_club(self) -> dict:
-        club = {'name': self.club_name,
-                'email': self.email,
-                'points': self.points}
-        return club
+    Returns:
+        list[Club]:
+            Variable all_clubs as a list of Club objects.
+    """
+    if not get_clubs.all_clubs:
+        get_clubs.all_clubs = load_clubs()
+    return get_clubs.all_clubs
 
-    @classmethod
-    def deserialize_club(cls, club: dict) -> object:
-        c = Club(club['name'],
-                 club['points'],
-                 club['email'])
-        return c
+
+get_clubs.all_clubs = []
