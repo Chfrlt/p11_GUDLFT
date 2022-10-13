@@ -25,11 +25,9 @@ def show_summary():
 
 @app.route('/book/<competition>/<club>')
 def book(competition: str, club: str):
-    booking_instance = BookingHandler(club, competition)
-    booking_result = booking_instance.find_data()
-    flash(booking_result['message'])
-    return render_template('booking.html', club=booking_result['club'],
-                           competition=booking_result['competition'])
+    booking_inst = BookingHandler(club, competition).find_booking_data()
+    return render_template('booking.html', club=booking_inst['club'],
+                           competition=booking_inst['competition'])
 
 
 @app.route('/purchasePlaces', methods=['POST'])
