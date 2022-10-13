@@ -1,5 +1,5 @@
-from repository.club import Club
-from repository.competition import Competition
+from models.club_model import Club
+from models.competition_model import Competition
 
 from .competition import CompetitionService
 from .club import ClubService
@@ -24,11 +24,12 @@ class PurchaseHandler(CompetitionService, ClubService):
 
     def set_up(self, club: str, competition: str) -> None:
         club = self.get_club_by_name(club)
+        print(club)
         self.club = Club.deserialize_club(club)
         competition = self.get_competition_by_name(competition)
         self.competition = Competition.deserialize_competition(competition)
 
     def purchase_places(self) -> dict:
         self.competition.number_of_places -= self.places_required
-        return {'competitions': self.competition.serialize_competition(),
+        return {'competitions': self.get_competitions(),
                 'club': self.club.serialize_club()}
