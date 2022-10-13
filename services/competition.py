@@ -1,7 +1,8 @@
 from repository.competition import Competition
 from repository.competition import (get_competitions
-                                    as repo_get_competitions)
-
+                                    as repo_get_competitions,
+                                    update_competitions_in_json
+                                    as repo_update_comp_json)
 
 class CompetitionService():
     """
@@ -12,6 +13,7 @@ class CompetitionService():
             Find corresponding competition from passed name.
         was_found(competition): Check if the passed competition is not None.
         get_competitions(): Get the list of competitions.
+        update_competitions_json(): Update competitions json.
     """
     def __init__(self) -> None:
         pass
@@ -54,3 +56,32 @@ class CompetitionService():
             list[Competition]: A list of competitions as Competition objects.
         """
         return repo_get_competitions()
+
+    def update_competitions(
+            self, updated_competition: Competition) -> list[Competition]:
+        """
+        Get the list of competitions,
+        then in it replace the old competition with the updated one.
+
+        Returns:
+            list[Club]:
+                The updated list of competitions as Competition objects.
+        """
+        competitions = repo_get_competitions()
+        for i, competition in enumerate(competitions):
+            if (updated_competition.competition_name ==
+                    competition.competition_name):
+                index = i
+                break
+        competitions[index] = updated_competition
+        return competitions
+
+    def update_competitions_json(self, competitions: list[Competition]):
+        """
+        Update competitions json.
+
+        Convert passed list of competitions object into a list of dict,
+        and call function to update json with converted list as arg.
+        """
+        repo_update_comp_json(
+            [c.serialize_competition() for c in competitions])

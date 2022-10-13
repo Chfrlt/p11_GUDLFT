@@ -1,5 +1,6 @@
 from models.club_model import Club
-from repository.club import get_clubs as repo_get_clubs
+from repository.club import (get_clubs as repo_get_clubs,
+                             update_clubs_in_json as repo_update_club_json)
 
 
 class ClubService():
@@ -14,6 +15,10 @@ class ClubService():
         get_club_login_result(club_email):
             Determinate which template should user be redirected to
             by checking if passed email is associated with a registered email.
+        update_club(updated_club):
+            Get the list of club, then in it replace the old club with
+            the updated one.
+        update_clubs_json(): Update clubs json.
     """
     def __init__(self) -> None:
         pass
@@ -95,3 +100,29 @@ class ClubService():
             list[Club]: A list of clubs as Club objects.
         """
         return repo_get_clubs()
+    
+    def update_clubs(self, updated_club: Club) -> list[Club]:
+        """
+        Get the list of clubs, then in it replace the old club with
+        the updated one.
+
+        Returns:
+            list[Club]:
+                The updated list of clubs as Club objects.
+        """
+        clubs = repo_get_clubs()
+        for i, club in enumerate(clubs):
+            if updated_club.club_name == club.club_name:
+                index = i
+                break
+        clubs[index] = updated_club
+        return clubs
+
+    def update_clubs_json(self, clubs: list[Club]) -> None:
+        """
+        Update clubs json.
+
+        Convert passed list of club objects into a list of dict,
+        and call function to update json with converted list as arg.
+        """
+        repo_update_club_json([c.serialize_club() for c in clubs])
