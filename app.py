@@ -37,7 +37,7 @@ def purchase_places():
     purchase_instance = PurchaseHandler(request.form['club'],
                                         request.form['competition'],
                                         request.form['places'])
-    purchase_result = purchase_instance.purchase_places()
+    purchase_result = purchase_instance.execute_purchase()
     flash('Great-booking complete!')
     return render_template('welcome.html',
                            club=purchase_result['club'],
