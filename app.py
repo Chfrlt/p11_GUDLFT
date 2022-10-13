@@ -16,10 +16,11 @@ def index():
 
 @app.route('/showSummary', methods=['POST'])
 def show_summary():
-    result = ClubService().get_club_by_email(request.form['email'])
+    login_result = ClubService().get_club_login_result(request.form['email'])
     competitions = CompetitionService().get_competitions()
-    flash(result['message'])
-    return render_template(result['template'], club=result['club'],
+    flash(login_result['msg'])
+    return render_template(login_result['template'],
+                           club=login_result['club'],
                            competitions=competitions)
 
 
@@ -32,14 +33,13 @@ def book(competition: str, club: str):
 
 @app.route('/purchasePlaces', methods=['POST'])
 def purchase_places():
-    purchase_instance = PurchaseHandler(request.form['club'],
-                                        request.form['competition'],
-                                        request.form['places'])
-    purchase_result = purchase_instance.execute_purchase()
+    purchase_inst = PurchaseHandler(request.form['club'],
+                                    request.form['competition'],
+                                    request.form['places']).execute_purchase()
     flash('Great-booking complete!')
     return render_template('welcome.html',
-                           club=purchase_result['club'],
-                           competitions=purchase_result['competitions'])
+                           club=purchase_inst['club'],
+                           competitions=purchase_inst['competitions'])
 
 
 # TODO: Add route for points display
