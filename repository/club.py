@@ -2,6 +2,7 @@ import json
 
 from models.club_model import Club
 
+
 def load_clubs() -> list[Club]:
     """
     Function to load the clubs table in clubs.json.
@@ -17,6 +18,7 @@ def load_clubs() -> list[Club]:
             list_.append(Club(c))
         return list_
 
+
 def get_clubs():
     """
     Function to get the list of clubs.
@@ -31,6 +33,23 @@ def get_clubs():
     if not get_clubs.all_clubs:
         get_clubs.all_clubs = load_clubs()
     return get_clubs.all_clubs
+
+
+def update_clubs_in_json(updated_clubs: list[dict]):
+    """
+    Function to rewrite the clubs table in clubs.json with
+    the updated clubs.
+
+    Update the variable all_clubs with newly updated data.
+
+    Args:
+        updated_clubs list[dict]: A list of the clubs as dicts
+    """
+    with open('clubs.json', 'w') as clubs:
+        dump = json.dumps({'clubs': updated_clubs})
+        clubs.write(dump)
+    # Reload clubs as they were updated
+    get_clubs.all_clubs = load_clubs()
 
 
 get_clubs.all_clubs = []

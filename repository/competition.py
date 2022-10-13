@@ -35,4 +35,21 @@ def get_competitions() -> list[Competition]:
     return get_competitions.all_competitions
 
 
+def update_competitions_in_json(updated_competitions: list[dict]) -> None:
+    """
+    Function to rewrite the competitions table in competitions.json with
+    the updated competitions.
+
+    Update the variable all_competitions with newly updated data.
+
+    Args:
+        updated_competitions list[dict]: A list of competition dicts
+    """
+    with open('competitions.json', 'w') as comps:
+        dump = json.dumps({'competitions': updated_competitions})
+        comps.write(dump)
+
+    get_competitions.all_competitions = load_competitions()
+
+
 get_competitions.all_competitions = []
