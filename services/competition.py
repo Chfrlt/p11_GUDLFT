@@ -7,7 +7,7 @@ class CompetitionService():
     def __init__(self) -> None:
         pass
 
-    def get_competition_by_name(self, name: str) -> Competition | None:
+    def get_competition_by_name(self, name: str) -> dict | None:
         """
         Find corresponding competition from passed name.
 
@@ -20,7 +20,7 @@ class CompetitionService():
         """
         comp = [comp for comp in repo_get_competitions()
                 if comp.competition_name == name]
-        return comp[0] if self.was_found(comp) else None
+        return comp[0].serialize_competition() if self.was_found(comp) else None
 
 
     def was_found(self, competition: Competition | None) -> bool:
