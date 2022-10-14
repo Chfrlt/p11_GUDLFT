@@ -117,3 +117,10 @@ class PurchaseHandler():
             bool: True if places doesn't exceed 12, False otherwise.
         """
         return True if self.places_required <= 12 else False
+
+    def check_all_conditions(self, club: Club, competition: Competition) -> bool:
+        return (True if (competition.date_has_not_passed()
+                         and competition.has_enough_places(self.places_required)
+                         and self.places_required_is_no_more_than_12()
+                         and club.has_enough_points(self.places_required))
+                else False)
