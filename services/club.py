@@ -18,7 +18,7 @@ class ClubService():
         update_club(updated_club):
             Get the list of club, then in it replace the old club with
             the updated one.
-        update_clubs_json(): Update clubs json.
+        update_clubs_json(): Update both clubs list and clubs table in json.
     """
     def __init__(self) -> None:
         pass
@@ -101,7 +101,7 @@ class ClubService():
         """
         return repo_get_clubs()
     
-    def update_clubs(self, updated_club: Club) -> list[Club]:
+    def update_clubs_list(self, club_to_update: Club) -> list[Club]:
         """
         Get the list of clubs, then in it replace the old club with
         the updated one.
@@ -112,17 +112,18 @@ class ClubService():
         """
         clubs = repo_get_clubs()
         for i, club in enumerate(clubs):
-            if updated_club.club_name == club.club_name:
+            if club_to_update.club_name == club.club_name:
                 index = i
                 break
-        clubs[index] = updated_club
+        clubs[index] = club_to_update
         return clubs
 
-    def update_clubs_json(self, clubs: list[Club]) -> None:
+    def update_clubs_json(self, club_to_update: Club) -> None:
         """
-        Update clubs json.
+        Update both clubs list and clubs table in json.
 
         Convert passed list of club objects into a list of dict,
         and call function to update json with converted list as arg.
         """
+        clubs = self.update_clubs_list(club_to_update)
         repo_update_club_json([c.serialize_club() for c in clubs])

@@ -100,8 +100,7 @@ class PurchaseHandler():
 
         if club_was_found is True and comp_was_found is True:
             club, competition = self.purchase_places(club, competition)
-            updated_clubs_list = ClubService().update_clubs_json(club)
-            ClubService().update_clubs(updated_clubs_list)
+            ClubService().update_clubs_json(club)
             CompetitionService().update_competitions_json(competition)
             return {'competitions': CompetitionService().get_competitions(),
                     'club': club}
