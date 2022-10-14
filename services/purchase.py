@@ -22,6 +22,8 @@ class PurchaseHandler():
             Subtract attributes places_required from passed
             club points and passed competition number_of_places.
         execute_purchase(): Function to execute the purchase process.
+        places_required_is_no_more_than_12(): 
+            Check if the amount of places required to purchase doesn't exceed 12.
     """
     def __init__(self, club_name: str, competition_name: str,
                  places_required: str) -> None:
@@ -65,6 +67,10 @@ class PurchaseHandler():
         """
         Subtract attributes places_required from passed club and competition.
 
+        Args:
+            club (Club): The club requesting the purchase.
+            competition (Competition): The competition from which places are requested for purchase.
+
         Returns:
             tuple: club, competition as Club, Competition objects
         """
@@ -81,9 +87,9 @@ class PurchaseHandler():
 
         Returns:
             dict:
-                A dict with the list of competitions as objects and
-                the updated club as objects.
-                dict of: {'competitions': list[Competition], 'club': Club}
+                A dict with the list of competitions, the club performing the purchase, and a message result.
+                If purchase has been processed, return club and competitions with updated value.
+                dict of: {'competitions': list[Competition], 'club': Club, msg: "Placeholder"}
         '''
         club = ClubService().get_club_by_name(self.club_name)
         competition = (
@@ -101,3 +107,13 @@ class PurchaseHandler():
             CompetitionService().update_competitions_json(updated_comps_list)
             return {'competitions': CompetitionService().get_competitions(),
                     'club': club}
+
+    def places_required_is_no_more_than_12(self) -> bool:
+        """
+        Check if the amount of places required to purchase
+        doesn't exceed 12.
+
+        Returns:
+            bool: True if places doesn't exceed 12, False otherwise.
+        """
+        return True if self.places_required <= 12 else False
