@@ -4,6 +4,7 @@ from repository.competition import (get_competitions
                                     update_competitions_in_json
                                     as repo_update_comp_json)
 
+
 class CompetitionService():
     """
     A class to handle service level action involving competitions.
@@ -13,7 +14,11 @@ class CompetitionService():
             Find corresponding competition from passed name.
         was_found(competition): Check if the passed competition is not None.
         get_competitions(): Get the list of competitions.
-        update_competitions_json(): Update both competitions list and competitions table in json.
+        update_competitions_list():
+            Get the list of competitions,
+            then in it replace the old competition with the updated one.
+        update_competitions_json():
+            Update both competitions list and competitions table in json.
     """
     def __init__(self) -> None:
         pass

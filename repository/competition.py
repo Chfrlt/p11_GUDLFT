@@ -48,7 +48,6 @@ def update_competitions_in_json(updated_competitions: list[dict]) -> None:
     with open('competitions.json', 'w') as comps:
         dump = json.dumps({'competitions': updated_competitions})
         comps.write(dump)
-
     get_competitions.all_competitions = load_competitions()
 
 

@@ -48,7 +48,6 @@ def update_clubs_in_json(updated_clubs: list[dict]):
     with open('clubs.json', 'w') as clubs:
         dump = json.dumps({'clubs': updated_clubs})
         clubs.write(dump)
-    # Reload clubs as they were updated
     get_clubs.all_clubs = load_clubs()
 
 

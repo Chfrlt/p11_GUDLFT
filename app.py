@@ -9,6 +9,7 @@ from services.booking import BookingHandler
 app = Flask(__name__)
 app.secret_key = 'something_special'
 
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -41,6 +42,7 @@ def purchase_places():
                            club=purchase_inst['club'],
                            competitions=purchase_inst['competitions'])
 
+
 @app.route('/board')
 def display_board():
     return render_template('board.html', clubs=ClubService().get_clubs())
@@ -49,6 +51,7 @@ def display_board():
 @app.route('/logout')
 def logout():
     return redirect(url_for('index'))
+
 
 if __name__ == '__main__':
     app.run()

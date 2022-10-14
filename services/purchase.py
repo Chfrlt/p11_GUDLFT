@@ -22,11 +22,13 @@ class PurchaseHandler():
             Subtract attributes places_required from passed
             club points and passed competition number_of_places.
         execute_purchase(): Function to execute the purchase process.
-        places_required_is_no_more_than_12(): 
-            Check if the amount of places required to purchase doesn't exceed 12.
-        check_all_conditions(club, competition): Check all conditions for purchase.
+        places_required_is_no_more_than_12():
+            Check if the amount of places required
+            to purchase doesn't exceed 12.
+        check_all_conditions(club, competition):
+            Check all conditions for purchase.
 
-            
+
     """
     def __init__(self, club_name: str, competition_name: str,
                  places_required: str) -> None:
@@ -70,7 +72,8 @@ class PurchaseHandler():
 
         Args:
             club (Club): The club requesting the purchase.
-            competition (Competition): The competition from which places are requested for purchase.
+            competition (Competition):
+                The competition from which places are requested for purchase.
 
         Returns:
             tuple: club, competition as Club, Competition objects
@@ -83,27 +86,34 @@ class PurchaseHandler():
         '''
         Function to execute the purchase process.
 
-        It get the relevant and club and competition from attributes,
-        and update their value in their respectives list.
+        It get the relevant club and competition from class attributes,
+        validate the purchase, and if the purchase is valid,
+        update their value in their respective lists.
 
         Returns:
             dict:
-                A dict with the list of competitions, the club performing the purchase, and a message result.
-                If purchase has been processed, return club and competitions with updated value.
-                dict of: {'competitions': list[Competition], 'club': Club, msg: "Placeholder"}
+                A dict with the list of competitions,
+                the club performing the purchase, and a message result.
+                If purchase has been processed, return club
+                and competitions with updated value.
+                dict of: {'competitions': list[Competition],
+                          'club': Club,
+                          'msg': "Placeholder"}
         '''
         club = ClubService().get_club_by_name(self.club_name)
         competition = (
-            CompetitionService().get_competition_by_name(self.competition_name))
+            CompetitionService().get_competition_by_name(self.competition_name)
+            )
         if self.check_all_conditions(club, competition) is True:
             club, competition = self.purchase_places(club, competition)
             ClubService().update_clubs_json(club)
             CompetitionService().update_competitions_json(competition)
             return {'competitions': CompetitionService().get_competitions(),
-                    'club': club, 'msg':f'Success-Purchased {self.places_required} places!'}
+                    'club': club,
+                    'msg': f'Success-Purchased {self.places_required} places!'}
         else:
             return {'competitions': CompetitionService().get_competitions(),
-                    'club': club, 'msg':'Cancelled-Invalid order'}
+                    'club': club, 'msg': 'Cancelled-Invalid order'}
 
     def places_required_is_no_more_than_12(self) -> bool:
         """
@@ -115,7 +125,8 @@ class PurchaseHandler():
         """
         return True if self.places_required <= 12 else False
 
-    def check_all_conditions(self, club: Club, competition: Competition) -> bool:
+    def check_all_conditions(self, club: Club,
+                             competition: Competition) -> bool:
         """
         Check all conditions for purchase.
 
@@ -126,10 +137,11 @@ class PurchaseHandler():
         Returns:
             bool: True if all conditions are met, False otherwise
         """
-        return (True if (ClubService().was_found(club)
-                         and CompetitionService().was_found(competition)
-                         and competition.date_has_not_passed()
-                         and competition.has_enough_places(self.places_required)
-                         and self.places_required_is_no_more_than_12()
-                         and club.has_enough_points(self.places_required))
+        return (True if
+                (ClubService().was_found(club)
+                 and CompetitionService().was_found(competition)
+                 and competition.date_has_not_passed()
+                 and competition.has_enough_places(self.places_required)
+                 and self.places_required_is_no_more_than_12()
+                 and club.has_enough_points(self.places_required))
                 else False)

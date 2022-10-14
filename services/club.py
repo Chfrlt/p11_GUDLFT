@@ -100,7 +100,7 @@ class ClubService():
             list[Club]: A list of clubs as Club objects.
         """
         return repo_get_clubs()
-    
+
     def update_clubs_list(self, club_to_update: Club) -> list[Club]:
         """
         Get the list of clubs, then in it replace the old club with

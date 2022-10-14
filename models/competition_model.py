@@ -1,5 +1,6 @@
 import datetime
 
+
 class Competition():
     """
     A class to represent a competition.
@@ -78,7 +79,8 @@ class Competition():
             bool: True if competition has not passed, False otherwise
         """
         curr_time = datetime.datetime.now()
-        competition_time = datetime.datetime.strptime(self.date, "%Y-%m-%d %H:%M:%S")
+        competition_time = (
+            datetime.datetime.strptime(self.date, "%Y-%m-%d %H:%M:%S"))
         return True if competition_time > curr_time else False
 
     def has_enough_places(self, places_requested: int) -> bool:
@@ -90,7 +92,8 @@ class Competition():
             places_required (int): The number of places requested.
 
         Returns:
-            bool: True if number of places available is superior or equal to the amount of
-            places required, False otherwise.
+            bool:
+                True if number of places available is superior or equal
+                to the amount of places required, False otherwise.
         """
         return True if self.number_of_places - places_requested >= 0 else False
