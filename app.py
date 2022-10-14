@@ -36,7 +36,7 @@ def purchase_places():
     purchase_inst = PurchaseHandler(request.form['club'],
                                     request.form['competition'],
                                     request.form['places']).execute_purchase()
-    flash('Great-booking complete!')
+    flash(purchase_inst['msg'])
     return render_template('welcome.html',
                            club=purchase_inst['club'],
                            competitions=purchase_inst['competitions'])
@@ -48,3 +48,6 @@ def purchase_places():
 @app.route('/logout')
 def logout():
     return redirect(url_for('index'))
+
+if __name__ == '__main__':
+    app.run()
