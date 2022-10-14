@@ -58,8 +58,6 @@ class PurchaseHandler():
         try:
             return int(places_required)
         except ValueError as e:
-            print('Passed places_required to PurchaseHandler'
-                  ' cannot be converted into int')
             raise e
 
     def purchase_places(self, club: Club,
@@ -93,18 +91,16 @@ class PurchaseHandler():
         '''
         club = ClubService().get_club_by_name(self.club_name)
         competition = (
-            CompetitionService().get_competition_by_name(self.competition_name)
-            )
-        club_was_found = ClubService().was_found(club)
-        comp_was_found = CompetitionService().was_found(competition)
-
-        if club_was_found is True and comp_was_found is True:
+            CompetitionService().get_competition_by_name(self.competition_name))
+        if self.check_all_conditions(club, competition) is True:
             club, competition = self.purchase_places(club, competition)
             ClubService().update_clubs_json(club)
             CompetitionService().update_competitions_json(competition)
             return {'competitions': CompetitionService().get_competitions(),
-                    'club': club}
-        
+                    'club': club, 'msg':'Great-Booking complete!'}
+        else:
+            return {'competitions': CompetitionService().get_competitions(),
+                    'club': club, 'msg':'Cancelled-Invalid order'}
 
     def places_required_is_no_more_than_12(self) -> bool:
         """
