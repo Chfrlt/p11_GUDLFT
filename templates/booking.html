@@ -10,7 +10,7 @@
     <form action="/purchasePlaces" method="post">
         <input type="hidden" name="club" value="{{club.club_name}}">
         <input type="hidden" name="competition" value="{{competition.competition_name}}">
-        <label for="places">How many places?</label><input type="number" name="places" id=""/>
+        <label for="places">How many places?</label><input type="number" name="places" id="" placeholder="0" value="0"/>
         <button type="submit">Book</button>
     </form>
 </body>
