@@ -1,3 +1,5 @@
+import datetime
+
 class Competition():
     """
     A class to represent a competition.
@@ -5,12 +7,16 @@ class Competition():
     Attributes:
         competition_name (str): name of the competition
         date (str): date of the competition
-        number_of_places (str): places avalaible for purchase in competition
+        number_of_places (int): places avalaible for purchase in competition
 
     Methods:
         is_valid_number_of_places(number_of_places):
             Returns passed number_of_places as an integer.
         serialize_competition(): Convert self into a dictionary.
+        has_enough_places(places_required):
+            Check if the number of places avalaible is superior or
+            equal to the passed number of places required.
+        date_has_not_passed(): Check if the date of the competition has passed.
     """
     def __init__(self, comp_dict: dict) -> None:
         """
@@ -54,7 +60,7 @@ class Competition():
 
     def serialize_competition(self):
         """
-        Object method to convert self into a dictionary.
+        Convert self into a dictionary.
 
         Returns:
             dict: self converted into dict.
@@ -63,3 +69,28 @@ class Competition():
                        'date': self.date,
                        'numberOfPlaces': str(self.number_of_places)}
         return competition
+
+    def date_has_not_passed(self) -> bool:
+        """
+        Check if the date of the competition has passed.
+
+        Return:
+            bool: True if competition has not passed, False otherwise
+        """
+        curr_time = datetime.datetime.now()
+        competition_time = datetime.datetime.strptime(self.date, "%Y-%m-%d %H:%M:%S")
+        return True if competition_time > curr_time else False
+
+    def has_enough_places(self, places_requested: int) -> bool:
+        """
+        Check if the number of places avalaible is superior or
+        equal to the passed number of places required.
+
+        Args:
+            places_required (int): The number of places requested.
+
+        Returns:
+            bool: True if number of places available is superior or equal to the amount of
+            places required, False otherwise.
+        """
+        return True if self.number_of_places - places_requested >= 0 else False
