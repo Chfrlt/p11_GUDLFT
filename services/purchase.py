@@ -24,6 +24,9 @@ class PurchaseHandler():
         execute_purchase(): Function to execute the purchase process.
         places_required_is_no_more_than_12(): 
             Check if the amount of places required to purchase doesn't exceed 12.
+        check_all_conditions(club, competition): Check all conditions for purchase.
+
+            
     """
     def __init__(self, club_name: str, competition_name: str,
                  places_required: str) -> None:
@@ -97,7 +100,7 @@ class PurchaseHandler():
             ClubService().update_clubs_json(club)
             CompetitionService().update_competitions_json(competition)
             return {'competitions': CompetitionService().get_competitions(),
-                    'club': club, 'msg':'Great-Booking complete!'}
+                    'club': club, 'msg':f'Success-Purchased {self.places_required} places!'}
         else:
             return {'competitions': CompetitionService().get_competitions(),
                     'club': club, 'msg':'Cancelled-Invalid order'}
@@ -113,6 +116,16 @@ class PurchaseHandler():
         return True if self.places_required <= 12 else False
 
     def check_all_conditions(self, club: Club, competition: Competition) -> bool:
+        """
+        Check all conditions for purchase.
+
+        Args:
+            club (Club): The club requesting the purchase
+            competition (Competition): The competition requested for purchase.
+
+        Returns:
+            bool: True if all conditions are met, False otherwise
+        """
         return (True if (ClubService().was_found(club)
                          and CompetitionService().was_found(competition)
                          and competition.date_has_not_passed()
