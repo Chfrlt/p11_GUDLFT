@@ -11,6 +11,9 @@ class Club():
         is_valid_points(points):
             Returns passed points as an integer.
         serialize_club(): Convert self into a dictionary.
+        has_enough_points(places_required):
+            Check if the number of points avalaibles is superior or
+            equal to the passed number of places requested.
     """
 
     def __init__(self, club_dict: dict) -> None:
@@ -59,3 +62,17 @@ class Club():
                 'email': self.email,
                 'points': str(self.points)}
         return club
+
+    def has_enough_points(self, places_requested: int) -> bool:
+        """
+        Check if the number of points avalaible is superior or
+        equal to the passed number of places required.
+
+        Args:
+            places_required (int): The number of places requested.
+
+        Returns:
+            bool: True if number points is superior or equal to the amount of
+            places required, False otherwise.
+        """
+        return True if self.points >= places_requested else False
