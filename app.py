@@ -41,8 +41,9 @@ def purchase_places():
                            club=purchase_inst['club'],
                            competitions=purchase_inst['competitions'])
 
-
-# TODO: Add route for points display
+@app.route('/board')
+def display_board():
+    return render_template('board.html', clubs=ClubService().get_clubs())
 
 
 @app.route('/logout')
