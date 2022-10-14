@@ -13,7 +13,7 @@ class CompetitionService():
             Find corresponding competition from passed name.
         was_found(competition): Check if the passed competition is not None.
         get_competitions(): Get the list of competitions.
-        update_competitions_json(): Update competitions json.
+        update_competitions_json(): Update both competitions list and competitions table in json.
     """
     def __init__(self) -> None:
         pass
@@ -57,7 +57,7 @@ class CompetitionService():
         """
         return repo_get_competitions()
 
-    def update_competitions(
+    def update_competitions_list(
             self, updated_competition: Competition) -> list[Competition]:
         """
         Get the list of competitions,
@@ -76,12 +76,13 @@ class CompetitionService():
         competitions[index] = updated_competition
         return competitions
 
-    def update_competitions_json(self, competitions: list[Competition]):
+    def update_competitions_json(self, competition_to_update: Competition):
         """
-        Update competitions json.
+        Update both competitions list and competitions table in json.
 
         Convert passed list of competitions object into a list of dict,
         and call function to update json with converted list as arg.
         """
+        competitions = self.update_competitions_list(competition_to_update)
         repo_update_comp_json(
             [c.serialize_competition() for c in competitions])
