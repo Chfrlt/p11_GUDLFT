@@ -3,7 +3,11 @@ include
 lib
 .Python
 .envrc
-__pycache__
-env
 .vscode
 temp.py
+env
+.pytest_cache
+__pycache__
+assets
+.coverage
+htmlcov
