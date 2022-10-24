@@ -9,6 +9,9 @@ from services.booking import BookingHandler
 app = Flask(__name__)
 app.secret_key = 'something_special'
 
+club_srv = ClubService()
+comp_srv = CompetitionService()
+
 
 @app.route('/')
 def index():
@@ -17,8 +20,8 @@ def index():
 
 @app.route('/showSummary', methods=['POST'])
 def show_summary():
-    login_result = ClubService().get_club_login_result(request.form['email'])
-    competitions = CompetitionService().get_competitions()
+    login_result = club_srv.get_club_login_result(request.form['email'])
+    competitions = comp_srv.get_competitions()
     flash(login_result['msg'])
     return render_template(login_result['template'],
                            club=login_result['club'],
@@ -27,7 +30,7 @@ def show_summary():
 
 @app.route('/book/<competition>/<club>')
 def book(competition: str, club: str):
-    booking_inst = BookingHandler(club, competition).find_booking_data()
+    booking_inst = BookingHandler(club, competition, comp_srv, club_srv).find_booking_data()
     return render_template('booking.html', club=booking_inst['club'],
                            competition=booking_inst['competition'])
 
@@ -36,7 +39,8 @@ def book(competition: str, club: str):
 def purchase_places():
     purchase_inst = PurchaseHandler(request.form['club'],
                                     request.form['competition'],
-                                    request.form['places']).execute_purchase()
+                                    request.form['places'],
+                                    comp_srv, club_srv).execute_purchase()
     flash(purchase_inst['msg'])
     return render_template('welcome.html',
                            club=purchase_inst['club'],
@@ -45,7 +49,7 @@ def purchase_places():
 
 @app.route('/board')
 def display_board():
-    return render_template('board.html', clubs=ClubService().get_clubs())
+    return render_template('board.html', clubs=club_srv.get_clubs())
 
 
 @app.route('/logout')
