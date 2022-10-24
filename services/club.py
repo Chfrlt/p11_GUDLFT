@@ -1,6 +1,6 @@
 from models.club_model import Club
 from repository.club import (get_clubs as repo_get_clubs,
-                             update_clubs_in_json as repo_update_club_json)
+                             update_clubs_in_json as repo_update_clubs_json)
 
 
 class ClubService():
@@ -18,12 +18,12 @@ class ClubService():
         update_club(updated_club):
             Get the list of club, then in it replace the old club with
             the updated one.
-        update_clubs_json(): Update both clubs list and clubs table in json.
+        update_clubs_json(club_to_update): Update both clubs list and clubs table in json.
     """
     def __init__(self) -> None:
         pass
 
-    def get_club_by_email(self, email: str) -> dict:
+    def get_club_by_email(self, email: str) -> Club | None:
         """
         Find corresponding club from passed email.
 
@@ -34,8 +34,9 @@ class ClubService():
             Club: Found club as object if club was found.
             None: If club wasn't found.
         """
-        club = [club for club in repo_get_clubs() if club.email == email]
-        return club[0] if self.was_found(club) is True else None
+        club = next((club for club in iter(repo_get_clubs())
+                     if club.email == email), None)
+        return club
 
     def get_club_by_name(self, name: str) -> Club | None:
         """
@@ -48,8 +49,9 @@ class ClubService():
             Club: Found club as object if club was found.
             None: If club wasn't found.
         """
-        club = [club for club in repo_get_clubs() if club.club_name == name]
-        return club[0] if self.was_found(club) is True else None
+        club = next((club for club in iter(repo_get_clubs())
+                     if club.club_name == name), None)
+        return club
 
     def was_found(self, club: Club | None) -> bool:
         """
@@ -90,7 +92,7 @@ class ClubService():
         if club_was_found is False:
             return {'template': 'index.html',
                     'club': club,
-                    'msg': "Sorry, that email wasn't found"}
+                    'msg': "Sorry, that email was not found"}
 
     def get_clubs(self) -> list[Club]:
         """
@@ -126,4 +128,4 @@ class ClubService():
         and call function to update json with converted list as arg.
         """
         clubs = self.update_clubs_list(club_to_update)
-        repo_update_club_json([c.serialize_club() for c in clubs])
+        repo_update_clubs_json([c.serialize_club() for c in clubs])
