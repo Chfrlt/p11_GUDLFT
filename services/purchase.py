@@ -5,6 +5,9 @@ from .competition import CompetitionService
 from .club import ClubService
 
 
+PLACE_COST = 3
+
+
 class PurchaseHandler():
     """
     A class to represent a purchase instance.
@@ -18,13 +21,14 @@ class PurchaseHandler():
             An instance of the CompetitionService class
         club_srv (ClubService):
             An instance of the ClubService class
+        purchase_cost(int): The cost of the requested purchase.
 
     Methods:
         is_valid_places_required(places_required):
             Returns places_required as an integer.
         purchase_places(club, competition):
-            Subtract attributes places_required from passed
-            club points and passed competition number_of_places.
+            Subtract purchase_cost from the points of the passed
+            club and the number_of_places of the passed competition.
         execute_purchase(): Function to execute the purchase process.
         places_required_is_no_more_than_12():
             Check if the amount of places required
@@ -51,9 +55,10 @@ class PurchaseHandler():
         """
         self.club_name = club_name
         self.competition_name = competition_name
-        self.places_required = self.is_valid_places_required(places_required)
         self.club_srv = club_service
         self.comp_srv = comp_service
+        self.places_required = self.is_valid_places_required(places_required)
+        self.purchase_cost = self.places_required * PLACE_COST
 
     def is_valid_places_required(self, places_required: str) -> int:
         """
@@ -76,7 +81,8 @@ class PurchaseHandler():
     def purchase_places(self, club: Club,
                         competition: Competition) -> tuple[Club, Competition]:
         """
-        Subtract attributes places_required from passed club and competition.
+        Subtract purchase_cost from the points of the passed
+        club and the number_of_places of the passed competition.
 
         Args:
             club (Club): The club requesting the purchase.
@@ -87,8 +93,8 @@ class PurchaseHandler():
         Returns:
             tuple: club, competition as Club, Competition objects
         """
-        competition.number_of_places -= self.places_required
-        club.points -= self.places_required
+        competition.number_of_places -= self.purchase_cost
+        club.points -= self.purchase_cost
         return club, competition
 
     def execute_purchase(self) -> dict:
@@ -152,6 +158,6 @@ class PurchaseHandler():
                      and competition.date_has_not_passed()
                      and competition.has_enough_places(self.places_required)
                      and self.places_required_is_no_more_than_12()
-                     and club.has_enough_points(self.places_required))
+                     and club.has_enough_points(self.purchase_cost))
                     else False)
         return is_valid

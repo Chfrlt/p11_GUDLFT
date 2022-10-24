@@ -48,7 +48,6 @@ class Club():
         try:
             return int(points)
         except ValueError as e:
-            print('Passed points to club model cannot be converted into int')
             raise e
 
     def serialize_club(self) -> dict:
@@ -63,7 +62,7 @@ class Club():
                 'points': str(self.points)}
         return club
 
-    def has_enough_points(self, places_requested: int) -> bool:
+    def has_enough_points(self, purchase_cost: int) -> bool:
         """
         Check if the number of points avalaible is superior or
         equal to the passed number of places required.
@@ -75,4 +74,4 @@ class Club():
             bool: True if number points is superior or equal to the amount of
             places required, False otherwise.
         """
-        return True if self.points >= places_requested else False
+        return True if self.points >= purchase_cost else False
