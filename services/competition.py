@@ -14,10 +14,10 @@ class CompetitionService():
             Find corresponding competition from passed name.
         was_found(competition): Check if the passed competition is not None.
         get_competitions(): Get the list of competitions.
-        update_competitions_list():
+        update_competitions_list(updated_competition):
             Get the list of competitions,
             then in it replace the old competition with the updated one.
-        update_competitions_json():
+        update_competitions_json(competition_to_update):
             Update both competitions list and competitions table in json.
     """
     def __init__(self) -> None:
@@ -34,9 +34,9 @@ class CompetitionService():
             Competition: Found competition as object if competition was found.
             None: If competition wasn't found.
         """
-        comp = [comp for comp in repo_get_competitions()
-                if comp.competition_name == name]
-        return comp[0] if self.was_found(comp) else None
+        comp = next((comp for comp in iter(repo_get_competitions())
+                     if comp.competition_name == name), None)
+        return comp
 
     def was_found(self, competition: Competition | None) -> bool:
         """
@@ -81,7 +81,8 @@ class CompetitionService():
         competitions[index] = updated_competition
         return competitions
 
-    def update_competitions_json(self, competition_to_update: Competition):
+    def update_competitions_json(self,
+                                 competition_to_update: Competition) -> None:
         """
         Update both competitions list and competitions table in json.
 
