@@ -9,8 +9,10 @@ class BookingHandler():
     Attributes:
         club_name (str): name of the club requesting booking
         competition_name (int): competition requested to book
-        comp_srv (CompetitionService): An instance of the CompetitionService class
-        club_srv (ClubService): An instance of the ClubService class
+        comp_srv (CompetitionService):
+            An instance of the CompetitionService class
+        club_srv (ClubService):
+            An instance of the ClubService class
 
     Methods:
         find_booking_data():
@@ -25,7 +27,8 @@ class BookingHandler():
         Args:
             club_name (str): name of the club requesting booking.
             competition_name (str): competition requested to book.
-            comp_service (CompetitionService): An instance of the CompetitionService class
+            comp_service (CompetitionService):
+                An instance of the CompetitionService class
             club_service (ClubService): An instance of the ClubService class
         """
         self.club_name = club_name

@@ -14,8 +14,10 @@ class PurchaseHandler():
         competition_name (str):
             The name of the competition from which to purchase places.
         places_required (str): The number of places to purchase.
-        comp_srv (CompetitionService): An instance of the CompetitionService class
-        club_srv (ClubService): An instance of the ClubService class
+        comp_srv (CompetitionService):
+            An instance of the CompetitionService class
+        club_srv (ClubService):
+            An instance of the ClubService class
 
     Methods:
         is_valid_places_required(places_required):
@@ -40,7 +42,8 @@ class PurchaseHandler():
             club_name (str): name of the club requesting booking.
             competition_name (str): competition requested to book.
             places_required (str): The number of places to purchase.
-            comp_service (CompetitionService): An instance of the CompetitionService class
+            comp_service (CompetitionService):
+                An instance of the CompetitionService class
             club_service (ClubService): An instance of the ClubService class
 
         Raises:
@@ -77,7 +80,7 @@ class PurchaseHandler():
 
         Args:
             club (Club): The club requesting the purchase.
-            
+
             competition (Competition):
                 The competition from which places are requested for purchase.
 
@@ -139,18 +142,16 @@ class PurchaseHandler():
         Args:
             club (Club): The club requesting the purchase
             competition (Competition): The competition requested for purchase.
-            comp_service (CompetitionService): An instance of the CompetitionService class
-            club_service (ClubService): An instance of the ClubService class
 
         Returns:
             bool: True if all conditions are met, False otherwise
         """
         is_valid = (True if
-            (self.club_srv.was_found(club)
-             and self.comp_srv.was_found(competition)
-             and competition.date_has_not_passed()
-             and competition.has_enough_places(self.places_required)
-             and self.places_required_is_no_more_than_12()
-             and club.has_enough_points(self.places_required))
-            else False)
+                    (self.club_srv.was_found(club)
+                     and self.comp_srv.was_found(competition)
+                     and competition.date_has_not_passed()
+                     and competition.has_enough_places(self.places_required)
+                     and self.places_required_is_no_more_than_12()
+                     and club.has_enough_points(self.places_required))
+                    else False)
         return is_valid

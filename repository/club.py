@@ -3,7 +3,9 @@ from pathlib import Path
 
 from models.club_model import Club
 
-filename_club = (Path(__file__).parent.parent.absolute().joinpath('clubs.json'))
+
+filename_club = Path(__file__).parent.parent.absolute().joinpath('clubs.json')
+
 
 def load_clubs() -> list[Club]:
     """

@@ -3,8 +3,10 @@ from pathlib import Path
 
 from models.competition_model import Competition
 
+
 filename_comp = (
     Path(__file__).parent.parent.absolute().joinpath('competitions.json'))
+
 
 def load_competitions() -> list[Competition]:
     """

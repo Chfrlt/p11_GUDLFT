@@ -18,7 +18,8 @@ class ClubService():
         update_club(updated_club):
             Get the list of club, then in it replace the old club with
             the updated one.
-        update_clubs_json(club_to_update): Update both clubs list and clubs table in json.
+        update_clubs_json(club_to_update):
+            Update both clubs list and clubs table in json.
     """
     def __init__(self) -> None:
         pass
