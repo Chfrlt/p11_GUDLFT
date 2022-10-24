@@ -8,8 +8,10 @@ temp.py
 env
 .pytest_cache
 __pycache__
+pytest_report.html
 assets
 .coverage
 htmlcov
 .vscode
 assets
+tests
