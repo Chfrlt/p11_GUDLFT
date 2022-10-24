@@ -1,18 +1,21 @@
 import json
+from pathlib import Path
 
 from models.competition_model import Competition
 
+filename_comp = (
+    Path(__file__).parent.parent.absolute().joinpath('competitions.json'))
 
 def load_competitions() -> list[Competition]:
     """
     Function to load the competitions table in competitions.json.
 
     Returns:
-        list[Competition: object] :
+        list[Competition] :
             A list of competitions found in json as Competition objects.
     """
     list_ = []
-    with open('competitions.json') as comps:
+    with open(filename_comp) as comps:
         competitions_list = json.load(comps)['competitions']
         for comp in competitions_list:
             list_.append(Competition(comp))
@@ -45,7 +48,7 @@ def update_competitions_in_json(updated_competitions: list[dict]) -> None:
     Args:
         updated_competitions list[dict]: A list of competition dicts
     """
-    with open('competitions.json', 'w') as comps:
+    with open(filename_comp, 'w') as comps:
         dump = json.dumps({'competitions': updated_competitions})
         comps.write(dump)
     get_competitions.all_competitions = load_competitions()
