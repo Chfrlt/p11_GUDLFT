@@ -5,13 +5,8 @@ from services.booking import BookingHandler
 from services.club import ClubService
 from services.competition import CompetitionService
 
-class BookingHandkerTest(unittest.TestCase):
 
-    @patch.object(ClubService, '__init__', return_value=None)
-    @patch.object(CompetitionService, '__init__', return_value=None)
-    def setUp(self, mock_comp_srv, mock_club_srv):
-        self.bh = BookingHandler('ex club name', 'ex comp name',
-                                 CompetitionService(), ClubService())
+class BookingHandlerInitTests():
 
     @patch.object(ClubService, '__init__', return_value=None)
     @patch.object(CompetitionService, '__init__', return_value=None)
@@ -22,6 +17,15 @@ class BookingHandkerTest(unittest.TestCase):
         self.assertEqual(bh.competition_name, 'ex comp name')
         self.assertIsInstance(bh.comp_srv, CompetitionService)
         self.assertIsInstance(bh.club_srv, ClubService)
+
+
+class BookingHandlerTest(unittest.TestCase):
+
+    @patch.object(ClubService, '__init__', return_value=None)
+    @patch.object(CompetitionService, '__init__', return_value=None)
+    def setUp(self, mock_comp_srv, mock_club_srv):
+        self.bh = BookingHandler('ex club name', 'ex comp name',
+                                 CompetitionService(), ClubService())
 
     @patch("services.club.ClubService.get_club_by_name", return_value='Club01')
     @patch("services.competition.CompetitionService.get_competition_by_name", return_value='Comp01')
