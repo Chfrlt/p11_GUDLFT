@@ -12,7 +12,6 @@ from selenium.webdriver.support import expected_conditions as EC
 
 from app import app
 
-
 @patch("repository.competition.filename_comp", new='tests/test.json')
 @patch("repository.club.filename_club", new='tests/test.json')
 class TestValidPurchase(flask_unittest.LiveTestCase):
