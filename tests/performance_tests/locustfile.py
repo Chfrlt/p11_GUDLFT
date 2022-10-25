@@ -7,9 +7,6 @@ from repository.competition import get_competitions
 
 class LocustPerformanceTest(HttpUser):
     wait_time = between(1, 5)
-    def __init__(self, environment):
-        self.club = get_clubs()[0]
-        self.comp = get_competitions()[0]
 
     @task
     def home(self):
@@ -21,23 +18,22 @@ class LocustPerformanceTest(HttpUser):
 
     @task
     def summary(self):
-        self.client.post("/showSummary", data={'email': self.club.email})
+        club = get_clubs()[0]
+        self.client.post("/showSummary", data={'email': club.email})
 
     @task
     def booking_page(self):
-        self.client.get(f"/book/{self.competition_name}/{self.club.club_name}")
+        club = get_clubs()[0]
+        comp = get_competitions()[0]
+        self.client.get(f"/book/{comp.competition_name}/{club.club_name}")
 
     @task
-    def purchasePlaces(self):        
-        data = {"competition": self.comp.competition_name, "club": self.club.club_name, "places": 1}
+    def purchasePlaces(self):
+        club = get_clubs()[0]
+        comp = get_competitions()[0] 
+        data = {"competition": comp.competition_name, "club": club.club_name, "places": 1}
         self.client.post('/purchasePlaces', data=data)
 
     @task
     def logout(self):
         response = self.client.get("/logout")
-
-    def tearDown(self):
-        with open('tests/test.json', 'w') as testfile:
-            dump = json.dumps({'clubs': self.clubs,
-                               'competitions': self.competitions})
-            testfile.write(dump)
