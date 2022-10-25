@@ -12,6 +12,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 from app import app
 
+@unittest.skipIf(__name__ != '__main__', 'Should be run as standalone')
 @patch("repository.competition.filename_comp", new='tests/test.json')
 @patch("repository.club.filename_club", new='tests/test.json')
 class TestValidPurchase(flask_unittest.LiveTestCase):
@@ -52,7 +53,7 @@ class TestValidPurchase(flask_unittest.LiveTestCase):
         user_choice.click()
         self.std_wait.until(EC.title_contains('Booking for '))
 
-        # User purchase a set amount of places (default=2)
+        # User purchase a set amount of places (default example = 2)
         amount_to_purchase_field = self.std_wait.until(EC.presence_of_element_located((By.NAME, 'places')))
         amount_to_purchase_field.send_keys(2)
         amount_to_purchase_field.send_keys(Keys.ENTER)
@@ -65,6 +66,7 @@ class TestValidPurchase(flask_unittest.LiveTestCase):
         self.std_wait.until(EC.title_is('GUDLFT Registration'))
 
 
+@unittest.skipIf(__name__ != '__main__', 'Should be run as standalone')
 @patch("repository.competition.filename_comp", new='tests/test.json')
 @patch("repository.club.filename_club", new='tests/test.json')
 class TestInvalidPurchase(flask_unittest.LiveTestCase):
