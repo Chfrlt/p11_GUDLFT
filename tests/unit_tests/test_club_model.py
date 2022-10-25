@@ -3,13 +3,9 @@ from random import randint
 
 from models.club_model import Club
 
-class ClubTest(unittest.TestCase):
 
-    def setUp(self) -> None:
-        self.club = Club({'name': 'Placeholder',
-                          'points': '10',
-                          'email': 'example@email.com'})
-
+class ClubInitTest(unittest.TestCase):
+    
     def test_init_ok(self):
         club = Club({'name': 'placeholder', 'points': '10', 'email': 'example@email.com'})
         self.assertEqual(club.club_name, 'placeholder')
@@ -21,6 +17,14 @@ class ClubTest(unittest.TestCase):
             Club({'name': 'Placeholder',
                   'points': 'dix',
                   'email': 'example@email.com'})
+
+
+class ClubTest(unittest.TestCase):
+
+    def setUp(self) -> None:
+        self.club = Club({'name': 'Placeholder',
+                          'points': '10',
+                          'email': 'example@email.com'})
 
     def test_is_valid_points_should_return_string_passed_as_int(self):
         actual_outcome = self.club.is_valid_points('10')

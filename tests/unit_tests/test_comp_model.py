@@ -6,8 +6,8 @@ from unittest.mock import patch
 from models.competition_model import Competition
 
 
-class CompetitionServiceTest(unittest.TestCase):
-
+class CompetitionInitTest(unittest.TestCase):
+    
     def test_init_ok(self):
         competition = Competition(
             {'name': 'Placeholder',
@@ -23,6 +23,9 @@ class CompetitionServiceTest(unittest.TestCase):
                 {'name': 'Placeholder',
                  'date': '2020-03-27 10:00:00',
                  'numberOfPlaces': 'dix'})
+
+
+class CompetitionServiceTest(unittest.TestCase):
 
     def setUp(self) -> None:
         self.competition = Competition(

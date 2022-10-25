@@ -9,14 +9,7 @@ from models.club_model import Club
 from models.competition_model import Competition
 
 
-class PurchaseHandlerTest(unittest.TestCase):
-
-    @patch.object(ClubService, '__init__', return_value=None)
-    @patch.object(CompetitionService, '__init__', return_value=None)
-    def setUp(self, mock_comp_srv, mock_club_srv) -> None:
-        self.ph = PurchaseHandler('placeholder', 'placeholder', '10',
-                                  CompetitionService(), ClubService())
-
+class PurchaseHandlerInitTest():
     @patch.object(ClubService, '__init__', return_value=None)
     @patch.object(CompetitionService, '__init__', return_value=None)
     def test_init_ok(self, mock_comp_srv, mock_club_srv):
@@ -36,6 +29,15 @@ class PurchaseHandlerTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             PurchaseHandler('placeholder', 'placeholder', 'dix',
                             CompetitionService(), ClubService())
+
+
+class PurchaseHandlerTest(unittest.TestCase):
+
+    @patch.object(ClubService, '__init__', return_value=None)
+    @patch.object(CompetitionService, '__init__', return_value=None)
+    def setUp(self, mock_comp_srv, mock_club_srv) -> None:
+        self.ph = PurchaseHandler('placeholder', 'placeholder', '10',
+                                  CompetitionService(), ClubService())
 
     def test_is_places_required_should_return_string_passed_as_int(self):
         self.assertEqual(self.ph.is_valid_places_required('10'), 10)
