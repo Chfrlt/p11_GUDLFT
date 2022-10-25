@@ -123,7 +123,7 @@ class TestInvalidPurchase(flask_unittest.LiveTestCase):
 def create_app():
     app.config['TESTING'] = True
     app.config['HOST'] = '127.0.0.1'
-    app.config['PORT'] = 500
+    app.config['PORT'] = 5000
     return app
 
 
