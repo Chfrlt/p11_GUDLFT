@@ -15,3 +15,4 @@ htmlcov
 .vscode
 assets
 locustfile.log
+test_unittest_runner.py
